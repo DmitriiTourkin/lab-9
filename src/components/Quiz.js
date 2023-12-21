@@ -70,20 +70,22 @@ export default function Quiz() {
                 'root.render(<Car />);',
             optionToAnswer: [
                 {id: 0, optionText: 'ReactDOM'},
-                {id: 1, optionText: 'Component'},
-                {id: 0, optionText: ''},
                 {id: 1, optionText: 'h1'},
+                {id: 2, optionText: 'div'},
+                {id: 3, optionText: 'Component'},
             ],
-            rightAnswerId: 0,
+            rightAnswerId: 1,
         },
         {
             id: 6,
             questionText: 'Что такое реквизит детей?',
             optionToAnswer: [
-                {id: 0, optionText: 'True'},
-                {id: 1, optionText: 'False'},
+                {id: 0, optionText: 'Свойство, позволяющее задать объект в качестве свойства'},
+                {id: 1, optionText: 'Свойство, позволяющее вставлять компоненты в другие компоненты'},
+                {id: 2, optionText: 'Свойство,  позволяющее передавать данные дочерним компонентам'},
+                {id: 3, optionText: 'Свойство, которое добавляет дочерние значения в состояние'},
             ],
-            rightAnswerId: 0,
+            rightAnswerId: 1,
         },
         {
             id: 7,
@@ -187,9 +189,9 @@ export default function Quiz() {
         {
             id: 16,
             questionText: 'Как вы можете объединить следующие массивы с помощью оператора spread?\n' +
-                '\n' +
-                'const array1 = [1, 2, 3];\n' +
-                'const array2 = [4, 5, 6];',
+                 +
+                ' const array1 = [1, 2, 3];\n' +
+                ' const array2 = [4, 5, 6];',
             optionToAnswer: [
                 {id: 0, optionText: 'const combined = ...array1 + ...array2'},
                 {id: 1, optionText: 'const combined = [...array1 + ...array2]'},
@@ -288,6 +290,7 @@ export default function Quiz() {
         },
     ];
 
+
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
 
@@ -298,14 +301,27 @@ export default function Quiz() {
         if (currentQuestionIndex < quizData.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         } else {
-            // Викторина завершена, отобразить результат
-            alert(`Вы ответили правильно на ${score} из ${quizData.length} вопросов`);
+            setCurrentQuestionIndex(100)
         }
     };
 
+    const contextText = (id) => {
+        if (id < 5) {
+            return <h5><br/>Реакт бывает сложным, но не отчавайтесь!</h5>
+        } else if (id > 5 && id < 10) {
+            return <h5><br/>Неплохой результат! Но нужно поднажать!</h5>
+        } else if (id >= 10 && id < 18) {
+            return <h5><br/>Неплохой результат! Вы на пути к новым свершениям!</h5>
+        } else if (id >= 18 && id < 25) {
+            return <h5><br/>Вы мастер своего дела!</h5>
+        }
+    }
+
     return (
+        currentQuestionIndex!==100 ? (
         <div className='question-wrapper'>
-            <h2>{quizData[currentQuestionIndex].questionText}</h2>
+            <h1>Вопрос №{currentQuestionIndex+1}</h1>
+            <h5>{quizData[currentQuestionIndex].questionText}</h5>
             <ul className='list-wrapper'>
                 {quizData[currentQuestionIndex].optionToAnswer.map((option) => (
                     <li  className='option-wrapper' key={option.id} onClick={() => handleAnswer(option.id)}>
@@ -313,6 +329,13 @@ export default function Quiz() {
                     </li>
                 ))}
             </ul>
-        </div>
+        </div>) : (
+            <div>
+                <h1>Поздравляем! Вы прошли тест!</h1>
+                <h4>{`Вы набрали ${score}/${quizData.length}`}</h4>
+                {contextText(score)}
+            </div>
+
+        )
     );
 };
