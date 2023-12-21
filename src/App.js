@@ -1,11 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
-import MainApp from "./quiz/MainApp";
+import './components/App.css';
+import Quiz from "./components/Quiz";
 
 function App() {
   return (
       <>
-        <MainApp/>
+        <Quiz/>
       </>
   );
 }
